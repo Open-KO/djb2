@@ -24,14 +24,26 @@ namespace hashing
 
     struct djb2
     {
+    private:
+        template <character_range Range>
+        static constexpr hash_type calculate( const Range &range, hash_type seed = 5381 ) noexcept
+        {
+            hash_type h = seed;
+            for ( auto &&element: range )
+            {
+                h = ( ( h << 5 ) + h ) + static_cast<hash_type>(element);
+            }
+            return h;
+        }
+
     public:
         consteval djb2( std::string_view djb ) noexcept : _hash( calculate( djb ) )
         {
-        };
+        }
 
         consteval djb2( std::wstring_view wdjb ) noexcept : _hash( calculate( wdjb ) )
         {
-        };
+        }
 
         constexpr hash_type operator()( ) const noexcept
         {
@@ -61,17 +73,6 @@ namespace hashing
 
     private:
         hash_type _hash;
-
-        template <character_range Range>
-        static constexpr hash_type calculate( const Range &range, hash_type seed = 5381 ) noexcept
-        {
-            hash_type h = seed;
-            for ( const auto &element: range )
-            {
-                h = ( ( h << 5 ) + h ) + element;
-            }
-            return h;
-        }
     };
 
     consteval hash_type operator"" _djb2( const char *str, size_t len ) noexcept
