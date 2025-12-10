@@ -75,12 +75,12 @@ namespace hashing
         hash_type _hash;
     };
 
-    consteval hash_type operator"" _djb2( const char *str, size_t len ) noexcept
+    consteval hash_type operator""_djb2( const char *str, size_t len ) noexcept
     {
         return djb2( std::string_view{ str, len } );
     }
 
-    consteval hash_type operator"" _djb2w( const wchar_t *str, size_t len ) noexcept
+    consteval hash_type operator""_djb2w( const wchar_t *str, size_t len ) noexcept
     {
         return djb2( std::wstring_view{ str, len } );
     }
